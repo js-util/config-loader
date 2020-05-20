@@ -9,7 +9,7 @@
 const deepmerge = require("deepmerge");
 
 // Project utility functions
-const fetchNestedValue   = require("@js-util/fetchNestedValue");
+const fetchNestedValue   = require("@js-util/fetch-nested-value");
 
 // Local utility functions
 const arrayConcatNotNull = require("./util/arrayConcatNotNull");
