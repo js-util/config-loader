@@ -8,9 +8,11 @@
 // External libs
 const deepmerge = require("deepmerge");
 
-// Utility functions
+// Project utility functions
+const fetchNestedValue   = require("@js-util/fetchNestedValue");
+
+// Local utility functions
 const arrayConcatNotNull = require("./util/arrayConcatNotNull");
-const fetchNestedValue   = require("./util/fetchNestedValue");
 const readHJsonFile      = require("./util/readHJsonFile");
 
 //-----------------------------------------------------

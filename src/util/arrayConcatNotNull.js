@@ -1,4 +1,3 @@
-
 /**
  * Minimal varient of ArrayConcatIfNotNull
  * 
