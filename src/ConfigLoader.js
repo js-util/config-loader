@@ -126,3 +126,6 @@ class ConfigLoader {
 		return fetchNestedValue(this, key);
 	}
 }
+
+// And export
+module.exports = ConfigLoader;
