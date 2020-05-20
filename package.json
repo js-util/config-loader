@@ -1,6 +1,6 @@
 {
 	"name": "@js-util/config-loader",
-	"version": "1.0.5",
+	"version": "1.0.6",
 	"description": "Quick and simple config loading, with sane defaults to get an application started",
 
 	"keywords": [
@@ -20,7 +20,6 @@
 	"private": false,
 
 	"dependencies": {
-		"deepmerge": "^4.2.2",
 		"fs-extra": "^8.1.0",
 		"hjson": "^3.2.1",
 		"@js-util/fetch-nested-value": "^1.0.2"

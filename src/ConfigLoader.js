@@ -5,9 +5,6 @@
 //
 //-----------------------------------------------------
 
-// External libs
-const deepmerge = require("deepmerge");
-
 // Project utility functions
 const fetchNestedValue   = require("@js-util/fetch-nested-value");
 
@@ -53,7 +50,7 @@ function loadConfigObject(filePath) {
  * 
  * @return {Object} Final merged object
  */
-function buildMergedConfig(fileList, defaultList) {
+function buildFullConfigArray(fileList, defaultList) {
 
 	// Array concat all the various
 	// - file paths
@@ -71,7 +68,7 @@ function buildMergedConfig(fileList, defaultList) {
 	fullConfigArray = fullConfigArray.filter(x => !!x);
 
 	// Time to merge them all
-	return deepmerge.all( fullConfigArray )
+	return fullConfigArray;
 }
 
 //-----------------------------------------------------
@@ -101,29 +98,38 @@ class ConfigLoader {
 		//------------------------------------------
 
 		// Build the fully merged config
-		let fullConfig = buildMergedConfig({}, fileList, defaultVal);
+		let fullConfigArray = buildFullConfigArray({}, fileList, defaultVal);
+		this._fullConfigArray = fullConfigArray;
 		
-		// Copy it over to self
-		for( let key in fullConfig ) {
-			if( key == "fetchValue" || key == "prototype" ) {
-				continue;
-			}
-			this[key] = Object.freeze(fullConfig[key]);
-		}
+		// // Copy it over to self
+		// for( let key in fullConfig ) {
+		// 	if( key == "fetchValue" || key == "prototype" ) {
+		// 		continue;
+		// 	}
+		// 	this[key] = Object.freeze(fullConfig[key]);
+		// }
 
-		// Freeze the values
-		Object.freeze(this);
+		// // Freeze the values
+		// Object.freeze(this);
 	}
 
 	/**
 	 * Fetch a nested value from the config
 	 * 
 	 * @param {String} key
+	 * @param {*} fallback 
 	 * 
 	 * @return {*} the nested value if found, else null
 	 */
-	fetchValue(key) {
-		return fetchNestedValue(this, key);
+	fetchValue(key, fallback) {
+		let fullConfigArray = this._fullConfigArray;
+		for(let i=0; i<fullConfigArray.length; ++i) {
+			let val = fetchNestedValue(fullConfigArray[i], key);
+			if( val !== null ) {
+				return val;
+			}
+		}
+		return fallback;
 	}
 }
 

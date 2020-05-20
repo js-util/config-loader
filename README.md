@@ -16,8 +16,13 @@ const ConfigLoader = ("@js-util/config-loader")
 // Load the various config files (if found),
 // along with the various default value fallbacks
 //
-module.exports = new ConfigLoader({
+const config = new ConfigLoader({
 	fileList: ["./config.json", "./config.hjson"],
 	default: require("./config.default.js")
 });
+
+//
+// Fetch some config values
+//
+config.fetchValue("hello.world")
 ```
