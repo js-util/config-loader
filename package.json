@@ -1,16 +1,28 @@
 {
-  "name": "config-loader",
-  "version": "1.0.0",
-  "description": "Small utility tool to load a config file, fetch values from it, and have default fallbacks.",
-  "main": "ConfigLoader.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "eugene@uilicious.com",
-  "license": "MIT",
-  "dependencies": {
-    "deepmerge": "^4.2.2",
-    "fs-extra": "^8.1.0",
-    "hjson": "^3.2.1"
-  }
+	"name": "@js-util/config-loader",
+	"version": "1.0.0",
+	"description": "Quick and simple config loading, with sane defaults to get an application started",
+
+	"keywords": [
+		"config",
+		"load",
+		"hjson",
+		"json"
+	],
+
+	"main": "ConfigLoader.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	
+	"author": "picocreator",
+	"license": "MIT",
+	"private": false,
+
+	"dependencies": {
+		"deepmerge": "^4.2.2",
+		"fs-extra": "^8.1.0",
+		"hjson": "^3.2.1",
+		"@js-util/fetch-nested-value": "^1.0.2"
+	}
 }
