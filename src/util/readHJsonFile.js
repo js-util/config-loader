@@ -13,7 +13,12 @@ function readHJsonFile(filePath) {
 		return null;
 	}
 	// Get the data and convert it
-	const data = fse.readFileSync(filePath);
+	const data = fse.readFileSync(filePath, {
+		encoding: "utf-8"
+	});
+	if( data == null || data.trim().length == 0 ) {
+		return null;
+	}
 	return hjson.parse(data);
 }
 
