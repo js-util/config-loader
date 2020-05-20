@@ -1,6 +1,6 @@
 {
 	"name": "@js-util/config-loader",
-	"version": "1.0.4",
+	"version": "1.0.5",
 	"description": "Quick and simple config loading, with sane defaults to get an application started",
 
 	"keywords": [
