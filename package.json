@@ -1,0 +1,16 @@
+{
+  "name": "config-loader",
+  "version": "1.0.0",
+  "description": "Small utility tool to load a config file, fetch values from it, and have default fallbacks.",
+  "main": "ConfigLoader.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "eugene@uilicious.com",
+  "license": "MIT",
+  "dependencies": {
+    "deepmerge": "^4.2.2",
+    "fs-extra": "^8.1.0",
+    "hjson": "^3.2.1"
+  }
+}
