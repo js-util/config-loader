@@ -1,6 +1,6 @@
 {
 	"name": "@js-util/config-loader",
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"description": "Quick and simple config loading, with sane defaults to get an application started",
 
 	"keywords": [
@@ -10,7 +10,7 @@
 		"json"
 	],
 
-	"main": "ConfigLoader.js",
+	"main": "./src/ConfigLoader.js",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
