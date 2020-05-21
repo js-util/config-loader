@@ -7,6 +7,7 @@
 
 // Project utility functions
 const fetchNestedValue   = require("@js-util/fetch-nested-value");
+const configObjectMerge  = require("@js-util/config-object-merge");
 
 // Local utility functions
 const arrayConcatNotNull = require("./util/arrayConcatNotNull");
@@ -42,7 +43,7 @@ function loadConfigObject(filePath) {
 }
 
 /**
- * Build the fully merged config, from the various configured params
+ * Build the full array of config objects, from the various configured params
  * (Either in an array, or raw form as args)
  * 
  * - file paths
@@ -69,6 +70,21 @@ function buildFullConfigArray(fileList, defaultList) {
 
 	// Time to merge them all
 	return fullConfigArray;
+}
+
+/**
+ * Given an array of config objects, merge them together into a single object
+ * 
+ * @param {Array<Object>} fullConfigArray 
+ * 
+ * @return {Object} merged config object
+ */
+function mergeConfigObjects(fullConfigArray) {
+	let res = {};
+	for(let i=fullConfigArray.length - 1; i >= 0; --i) {
+		res = configObjectMerge(res, fullConfigArray[i]);
+	}
+	return res;
 }
 
 //-----------------------------------------------------
@@ -100,17 +116,21 @@ class ConfigLoader {
 		// Build the fully merged config
 		let fullConfigArray = buildFullConfigArray({}, fileList, defaultVal);
 		this._fullConfigArray = fullConfigArray;
-		
-		// // Copy it over to self
-		// for( let key in fullConfig ) {
-		// 	if( key == "fetchValue" || key == "prototype" ) {
-		// 		continue;
-		// 	}
-		// 	this[key] = Object.freeze(fullConfig[key]);
-		// }
 
-		// // Freeze the values
-		// Object.freeze(this);
+		// Lets merge it together
+		let mergedConfig = mergeConfigObjects(fullConfigArray);
+		this._mergedConfig = mergedConfig;
+		
+		// Copy it over to self
+		for( let key in mergedConfig ) {
+			if( key == "fetchValue" || key == "prototype" ) {
+				continue;
+			}
+			this[key] = Object.freeze(fullConfig[key]);
+		}
+
+		// Freeze the values
+		Object.freeze(this);
 	}
 
 	/**
