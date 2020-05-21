@@ -126,7 +126,7 @@ class ConfigLoader {
 			if( key == "fetchValue" || key == "prototype" ) {
 				continue;
 			}
-			this[key] = Object.freeze(fullConfig[key]);
+			this[key] = Object.freeze(mergedConfig[key]);
 		}
 
 		// Freeze the values
