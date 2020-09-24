@@ -142,14 +142,15 @@ class ConfigLoader {
 	 * @return {*} the nested value if found, else null
 	 */
 	fetchValue(key, fallback) {
-		let fullConfigArray = this._fullConfigArray;
-		for(let i=0; i<fullConfigArray.length; ++i) {
-			let val = fetchNestedValue(fullConfigArray[i], key);
-			if( val !== null ) {
-				return val;
-			}
-		}
-		return fallback;
+		// let fullConfigArray = this._fullConfigArray;
+		// for(let i=0; i<fullConfigArray.length; ++i) {
+		// 	let val = fetchNestedValue(fullConfigArray[i], key, null);
+		// 	if( val !== null && val !== undefined ) {
+		// 		return val;
+		// 	}
+		// }
+		// return fallback;
+		return fetchNestedValue( this._mergedConfig, key, fallback );
 	}
 }
 

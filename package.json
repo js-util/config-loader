@@ -22,7 +22,7 @@
 	"dependencies": {
 		"fs-extra": "^8.1.0",
 		"hjson": "^3.2.1",
-		"@js-util/fetch-nested-value": "^1.0.3",
+		"@js-util/fetch-nested-value": "^1.0.4",
 		"@js-util/config-object-merge": "^1.0.1"
 	}
 }
