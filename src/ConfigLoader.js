@@ -87,6 +87,56 @@ function mergeConfigObjects(fullConfigArray) {
 	return res;
 }
 
+/**
+ * Given a config directory, scan it for all the config files, and import them accordingly
+ * This supports jsonc, hjson, json
+ * 
+ * @param {String} configDir 
+ * @returns 
+ */
+function scanConfigDir(configDir) {
+	let configObj = {};
+
+	// Scan the config directory
+	let files = fs.readdirSync(configDir);
+
+	// Load the config files
+	for(const filename of files) {
+		let filePath = path.join(configDir, filename);
+
+		// Check if its a directory
+		// If so, recursively scan it
+		if( fs.lstatSync(filePath).isDirectory() ) {
+			let subConfigObj = scanConfigDir(filePath);
+			configObj = configObjectMerge(configObj, {
+				filename: subConfigObj
+			});
+			continue;
+		}
+
+		// Get the file extension
+		let fileExt = path.extname(filename);
+		
+		// Skip protected keywords
+		if( filename == "fetchValue" || filename == "prototype" ) {
+			continue;
+		}
+
+		// Skip non-config files
+		if( fileExt != ".json" && fileExt != ".hjson" && fileExt != ".jsonc" ) {
+			continue;
+		}
+
+		// Load the config file
+		let fileConfig = loadConfigObject(filePath);
+
+		// Merge it into the config object
+		configObj = configObjectMerge(configObj, fileConfig);
+	}
+
+	return configObj;
+}
+
 //-----------------------------------------------------
 //
 // Function implementation
@@ -107,11 +157,18 @@ class ConfigLoader {
 		options = options || {};
 	
 		// Normalize the default options value
-		let fileList    = options.fileList || ["./config.json", "./config.hjson"];
-		let defaultVal  = options.default  || [ {} ];
-	
+		let fileList      = options.fileList      || ["./config.json", "./config.hjson"];
+		let defaultVal    = options.default       || [ {} ];
+		let configDirList = options.configDirList || []
+		
 		// Config processing
 		//------------------------------------------
+
+		// Scan the config directories
+		for(const dir of configDirList) {
+			let dirConfig = scanConfigDir(dir);
+			configObjectMerge(this, dirConfig);
+		}
 
 		// Build the fully merged config
 		let fullConfigArray = buildFullConfigArray({}, fileList, defaultVal);
