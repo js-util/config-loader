@@ -13,6 +13,10 @@ const configObjectMerge  = require("@js-util/config-object-merge");
 const arrayConcatNotNull = require("./util/arrayConcatNotNull");
 const readHJsonFile      = require("./util/readHJsonFile");
 
+// Add fs/path module
+const fs = require("fs");
+const path = require("path");
+
 //-----------------------------------------------------
 //
 // Utility functions
