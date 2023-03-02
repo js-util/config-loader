@@ -18,7 +18,8 @@ const ConfigLoader = ("@js-util/config-loader")
 //
 const config = new ConfigLoader({
 	fileList: ["./config.json", "./config.hjson"],
-	default: require("./config.default.js")
+	default: require("./config.default.js"),
+	configDirList: ["./config/"],
 });
 
 //
