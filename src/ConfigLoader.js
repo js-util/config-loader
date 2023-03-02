@@ -112,9 +112,12 @@ function scanConfigDir(configDir) {
 		// If so, recursively scan it
 		if( fs.lstatSync(filePath).isDirectory() ) {
 			let subConfigObj = scanConfigDir(filePath);
-			configObj = configObjectMerge(configObj, {
-				filename: subConfigObj
-			});
+
+			let fileConfigObj = {};
+			fileConfigObj[ path.basename(filename, fileExt) ] = subConfigObj;
+
+			// merge it
+			configObj = configObjectMerge(configObj, fileConfigObj);
 			continue;
 		}
 
@@ -133,9 +136,11 @@ function scanConfigDir(configDir) {
 
 		// Load the config file
 		let fileConfig = loadConfigObject(filePath);
+		let fileConfigObj = {};
+		fileConfigObj[ path.basename(filename, fileExt) ] = fileConfig;
 
 		// Merge it into the config object
-		configObj = configObjectMerge(configObj, fileConfig);
+		configObj = configObjectMerge(configObj, fileConfigObj);
 	}
 
 	return configObj;
