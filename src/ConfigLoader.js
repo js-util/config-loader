@@ -114,7 +114,7 @@ function scanConfigDir(configDir) {
 			let subConfigObj = scanConfigDir(filePath);
 
 			let fileConfigObj = {};
-			fileConfigObj[ path.basename(filename, fileExt) ] = subConfigObj;
+			fileConfigObj[ filename ] = subConfigObj;
 
 			// merge it
 			configObj = configObjectMerge(configObj, fileConfigObj);
