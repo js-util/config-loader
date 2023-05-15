@@ -174,14 +174,14 @@ class ConfigLoader {
 		//------------------------------------------
 
 		// Scan the config directories
-		let dirConfig = {};
+		let dirConfigObj = {};
 		for(const dir of configDirList) {
 			let dirConfig = scanConfigDir(dir);
-			configObjectMerge(dirConfig, dirConfig);
+			configObjectMerge(dirConfigObj, dirConfig);
 		}
 
 		// Build the fully merged config
-		let fullConfigArray = buildFullConfigArray(dirConfig, fileList, defaultVal);
+		let fullConfigArray = buildFullConfigArray(dirConfigObj, fileList, defaultVal);
 		this._fullConfigArray = fullConfigArray;
 
 		// Lets merge it together
