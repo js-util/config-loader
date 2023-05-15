@@ -10,7 +10,6 @@ const fetchNestedValue   = require("@js-util/fetch-nested-value");
 const configObjectMerge  = require("@js-util/config-object-merge");
 
 // Local utility functions
-const arrayConcatNotNull = require("./util/arrayConcatNotNull");
 const readHJsonFile      = require("./util/readHJsonFile");
 
 // Add fs/path module
@@ -44,51 +43,6 @@ function loadConfigObject(filePath) {
 
 	// Return null
 	return null;
-}
-
-/**
- * Build the full array of config objects, from the various configured params
- * (Either in an array, or raw form as args)
- * 
- * - file paths
- * - raw config object
- * 
- * @return {Object} Final merged object
- */
-function buildFullConfigArray(fileList, defaultList) {
-
-	// Array concat all the various
-	// - file paths
-	// - raw config object
-	//
-	// Either in an array, or raw form
-	let fullConfigArray = arrayConcatNotNull.apply(null, arguments);
-
-	// Load the actual value, for each item
-	for(let i=fullConfigArray.length-1; i > 0; --i) {
-		fullConfigArray[i] = loadConfigObject( fullConfigArray[i] );
-	}
-
-	// Filter out null or blank values
-	fullConfigArray = fullConfigArray.filter(x => !!x);
-
-	// Time to merge them all
-	return fullConfigArray;
-}
-
-/**
- * Given an array of config objects, merge them together into a single object
- * 
- * @param {Array<Object>} fullConfigArray 
- * 
- * @return {Object} merged config object
- */
-function mergeConfigObjects(fullConfigArray) {
-	let res = {};
-	for(let i=fullConfigArray.length - 1; i >= 0; --i) {
-		res = configObjectMerge(res, fullConfigArray[i]);
-	}
-	return res;
 }
 
 /**
@@ -173,20 +127,33 @@ class ConfigLoader {
 		// Config processing
 		//------------------------------------------
 
+		// Lets build the full config object
+		let fullConfigObj = {};
+
+		// Merge the default value
+		fullConfigObj = configObjectMerge(fullConfigObj, defaultVal);
+
 		// Scan the config directories
 		let dirConfigObj = {};
 		for(const dir of configDirList) {
 			let dirConfig = scanConfigDir(dir);
+			if(dirConfig == null) {
+				continue;
+			}
 			configObjectMerge(dirConfigObj, dirConfig);
 		}
 
 		// Build the fully merged config
-		let fullConfigArray = buildFullConfigArray(dirConfigObj, fileList, defaultVal);
-		this._fullConfigArray = fullConfigArray;
+		for(const file of fileList) {
+			let fileConfig = loadConfigObject(file);
+			if(fileConfig == null) {
+				continue;
+			}
+			configObjectMerge(fullConfigObj, fileConfig);
+		}
 
-		// Lets merge it together
-		let mergedConfig = mergeConfigObjects(fullConfigArray);
-		this._mergedConfig = mergedConfig;
+		// Saved the full config object
+		this._mergedConfig = fullConfigObj;
 		
 		// Copy it over to self
 		for( let key in mergedConfig ) {
