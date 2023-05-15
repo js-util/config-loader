@@ -156,11 +156,11 @@ class ConfigLoader {
 		this._mergedConfig = fullConfigObj;
 		
 		// Copy it over to self
-		for( let key in mergedConfig ) {
+		for( let key in fullConfigObj ) {
 			if( key == "fetchValue" || key == "prototype" ) {
 				continue;
 			}
-			this[key] = Object.freeze(mergedConfig[key]);
+			this[key] = Object.freeze(fullConfigObj[key]);
 		}
 
 		// Freeze the values
