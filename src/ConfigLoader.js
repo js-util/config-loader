@@ -121,7 +121,7 @@ class ConfigLoader {
 	
 		// Normalize the default options value
 		let fileList      = options.fileList      || ["./config.json", "./config.hjson"];
-		let defaultVal    = options.default       || [ {} ];
+		let defaultVal    = options.default       || {};
 		let configDirList = options.configDirList || []
 		
 		// Config processing
@@ -134,13 +134,12 @@ class ConfigLoader {
 		fullConfigObj = configObjectMerge(fullConfigObj, defaultVal);
 
 		// Scan the config directories
-		let dirConfigObj = {};
 		for(const dir of configDirList) {
 			let dirConfig = scanConfigDir(dir);
 			if(dirConfig == null) {
 				continue;
 			}
-			configObjectMerge(dirConfigObj, dirConfig);
+			fullConfigObj = configObjectMerge(fullConfigObj, dirConfig);
 		}
 
 		// Build the fully merged config
@@ -149,7 +148,7 @@ class ConfigLoader {
 			if(fileConfig == null) {
 				continue;
 			}
-			configObjectMerge(fullConfigObj, fileConfig);
+			fullConfigObj = configObjectMerge(fullConfigObj, fileConfig);
 		}
 
 		// Saved the full config object
